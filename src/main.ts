@@ -5,7 +5,7 @@ import { OrbitControls } from 'three/examples/jsm/Addons.js';
 import { GLTFLoader } from 'three/examples/jsm/Addons.js';
 
 //all our models will be scaled in a 2x2x2 configuration to fit into the screen
-const modelTargetSize:number = 2;
+const modelTargetSize: number = 2;
 
 const canvas = document.getElementById("webgl") as HTMLCanvasElement;
 
@@ -14,36 +14,36 @@ const sliceLine = document.getElementById("slice-line") as HTMLElement;
 
 //SCENE SETUP
 const scene = new THREE.Scene();
-const camera = new THREE.PerspectiveCamera(45,window.innerWidth/window.innerHeight,0.1,100);
-camera.position.set(0,1,5);
+const camera = new THREE.PerspectiveCamera(45, window.innerWidth / window.innerHeight, 0.1, 100);
+camera.position.set(0, 1, 5);
 
-const renderer = new THREE.WebGLRenderer({canvas,antialias:true});
-renderer.setSize(window.innerWidth,window.innerHeight);
+const renderer = new THREE.WebGLRenderer({ canvas, antialias: true });
+renderer.setSize(window.innerWidth, window.innerHeight);
 
 
 //Orbit Controls
-const controls = new OrbitControls(camera,canvas);
-controls.enableDamping=true;
+const controls = new OrbitControls(camera, canvas);
+controls.enableDamping = true;
 
 //The Main ROOT group where all the models and its sliced counterparts are added
-const modelRoot =new THREE.Group();
+const modelRoot = new THREE.Group();
 scene.add(modelRoot);
 
 //Ambient + Directional Lighting to go with MeshStandardMaterial
-const dirLight = new THREE.DirectionalLight(0xffffff,2);
-dirLight.position.set(5,5,5);
+const dirLight = new THREE.DirectionalLight(0xffffff, 2);
+dirLight.position.set(5, 5, 5);
 scene.add(dirLight);
-scene.add(new THREE.AmbientLight(0xffffff,0.5));
+scene.add(new THREE.AmbientLight(0xffffff, 0.5));
 
 //MODEL LOADER
 const modelSelect = document.getElementById("model-select") as HTMLSelectElement;
 const gltfLoader = new GLTFLoader();
 
 //Function to load and center the model
-const loadModel = (url:string)=>{
+const loadModel = (url: string) => {
 
     //load the model
-    gltfLoader.load(url,(gltf)=>{
+    gltfLoader.load(url, (gltf) => {
         const model = gltf.scene;
 
         // Calculate the Bounding Box around the model
@@ -55,7 +55,7 @@ const loadModel = (url:string)=>{
         // We find the largest dimension (x, y, or z) and scale based on that.
         const maxDimension = Math.max(size.x, size.y, size.z);
         const scale = modelTargetSize / maxDimension;
-        
+
         //scale the model accordingly
         model.scale.set(scale, scale, scale);
 
@@ -68,10 +68,10 @@ const loadModel = (url:string)=>{
         modelRoot.add(model);
 
         //reset camera and controls
-        camera.position.set(0,1,5);
-        camera.lookAt(0,0,0);
+        camera.position.set(0, 1, 5);
+        camera.lookAt(0, 0, 0);
 
-        controls.target.set(0,0,0);
+        controls.target.set(0, 0, 0);
         controls.update();
     });
 }
@@ -80,9 +80,9 @@ const loadModel = (url:string)=>{
 loadModel(modelSelect.value);
 
 //render LOOP
-const render=()=>{
+const render = () => {
     controls.update();
-    renderer.render(scene,camera);
+    renderer.render(scene, camera);
     requestAnimationFrame(render);
 }
 render();
