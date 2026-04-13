@@ -1,0 +1,29 @@
+{
+  "name": "slicingthreejs",
+  "version": "1.0.0",
+  "description": "A mesh slicing application in ThreeJS",
+  "main": "index.js",
+  "scripts": {
+    "dev": "vite",
+    "build": "tsc && vite build",
+    "preview": "vite preview"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/kendad/SlicingThreeJS.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "type": "commonjs",
+  "bugs": {
+    "url": "https://github.com/kendad/SlicingThreeJS/issues"
+  },
+  "homepage": "https://github.com/kendad/SlicingThreeJS#readme",
+  "dependencies": {
+    "@types/three": "^0.183.1",
+    "three": "^0.183.2",
+    "typescript": "^6.0.2",
+    "vite": "^8.0.8"
+  }
+}

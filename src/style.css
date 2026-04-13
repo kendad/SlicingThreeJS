@@ -1,0 +1,100 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box; /* Prevents padding from breaking layout */
+}
+
+html, body {
+    overflow: hidden;
+    background-color: #0a0a0a; /* Dark background for when models aren't covering the screen */
+    font-family: 'Inter', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+}
+
+#ui-container {
+    position: fixed;
+    top: 24px;
+    left: 24px;
+    z-index: 20;
+    width: 280px;
+    
+    /* Dark Glassmorphism Effect */
+    background: rgba(18, 18, 18, 0.8);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+    
+    padding: 20px;
+    border-radius: 12px;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.5);
+    color: #e0e0e0;
+    pointer-events: auto;
+}
+
+/* Headings */
+#ui-container label {
+    display: block;
+    margin-bottom: 8px;
+    font-size: 11px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    color: #888;
+}
+
+/* Custom Styled Select */
+#model-select {
+    width: 100%;
+    padding: 10px 12px;
+    border-radius: 6px;
+    background: #252525;
+    color: #fff;
+    border: 1px solid #3d3d3d;
+    font-size: 14px;
+    cursor: pointer;
+    transition: border-color 0.2s, background 0.2s;
+    outline: none;
+    appearance: none; /* Removes default OS arrow */
+}
+
+#model-select:hover {
+    border-color: #555;
+    background: #2a2a2a;
+}
+
+#model-select:focus {
+    border-color: #007aff; /* Subtle blue focus */
+}
+
+/* Divider */
+hr {
+    border: 0;
+    border-top: 1px solid rgba(255, 255, 255, 0.1);
+    margin: 20px 0;
+}
+
+/* Instructions Styling */
+.instruction-row {
+    display: flex;
+    align-items: center;
+    margin-bottom: 12px;
+    font-size: 13px;
+    color: #bbb;
+}
+
+.key-cap {
+    background: #333;
+    padding: 3px 7px;
+    border-radius: 4px;
+    margin-right: 10px;
+    font-family: 'Monaco', 'Consolas', monospace;
+    font-size: 11px;
+    color: #fff;
+    border-bottom: 2px solid #1a1a1a;
+    min-width: 45px;
+    text-align: center;
+}
+
+strong {
+    color: #fff;
+    font-weight: 600;
+}

@@ -1,0 +1,45 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <link rel="stylesheet" href="style.css">
+  <title>SLICING</title>
+</head>
+
+<body>
+  <canvas id="webgl"></canvas>
+
+  <svg id="overlay" style="position: fixed; top: 0; left: 0; width: 100%; height: 100%; pointer-events: none; z-index: 10;">
+    <line id="slice-line" x1="0" y1="0" x2="0" y2="0" stroke="white" stroke-width="2" stroke-dasharray="5,5" style="display: none;" />
+  </svg>
+
+  <div id="ui-container">
+    <div style="margin-bottom: 5px;">
+      <label for="model-select">Select Model</label>
+      <select id="model-select">
+        <option value="/models/beer_bottle/scene.gltf">Beer Bottle</option>
+        <option value="/models/drone/scene.gltf">Drone</option>
+        <option value="/models/duck/scene.gltf">Duck</option>
+      </select>
+    </div>
+
+    <hr>
+
+    <div id="instructions">
+      <div class="instruction-row">
+        <span class="key-cap">CTRL</span>
+        <span>Click & Drag to <strong>Slice</strong></span>
+      </div>
+      <div class="instruction-row">
+        <span class="key-cap">ALT</span>
+        <span>Click & Drag to <strong>Move Parts</strong></span>
+      </div>
+    </div>
+  </div>
+
+  <script type="module" src="./src/main.ts"></script>
+</body>
+
+</html>
