@@ -1,4 +1,7 @@
 # Slicing ThreeJS
+Checkout the application at:
+https://boisterous-toffee-d3ec0e.netlify.app/
+
 A mesh slicing application written in ThreeJS
 
 A Slicing Algorithm based on the __Sutherland-Hodgman algorithm__ adapted to the project need of slicing models.
@@ -9,6 +12,7 @@ be check out in the commented code at __MeshCutter.ts__
 ___
 
 External Libraries Used: THREEJS
+
 Supports currenly only GLTF/GLB models
 ___
 
