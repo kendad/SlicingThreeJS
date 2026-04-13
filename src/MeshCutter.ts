@@ -6,7 +6,7 @@ interface VertexData {
     uv: THREE.Vector2 | null
 }
 
-export class MeshCutter{
+export class MeshCutter {
 
     //if 'p' is a point on the plane and 'n' is its normal 
     //then for any point 'r' on the plane.... the plane equation can be expressed as
@@ -17,7 +17,7 @@ export class MeshCutter{
     //where 'p' is a point on the plane and 'n' is the plane normal and 'r' will be any point on the model
     // [n.r + d] > 0 or <0 then 'r' is inside or outside the plane
     // [n.r + d] == 0 then 'r' lies on the plane
-    private static classifyPoint(point:THREE.Vector3,planeNormal:THREE.Vector3,planeConstant:number){
+    private static classifyPoint(point: THREE.Vector3, planeNormal: THREE.Vector3, planeConstant: number) {
         //[n.r + d]
         return planeNormal.dot(point) + planeConstant;
     }
@@ -28,11 +28,11 @@ export class MeshCutter{
         return {
             position: new THREE.Vector3().lerpVectors(vA.position, vB.position, t),
             //Normals and UV might not exists for the model
-            normal: vA.normal && vB.normal 
-                ? new THREE.Vector3().lerpVectors(vA.normal, vB.normal, t).normalize() 
+            normal: vA.normal && vB.normal
+                ? new THREE.Vector3().lerpVectors(vA.normal, vB.normal, t).normalize()
                 : null,
-            uv: vA.uv && vB.uv 
-                ? new THREE.Vector2().lerpVectors(vA.uv, vB.uv, t) 
+            uv: vA.uv && vB.uv
+                ? new THREE.Vector2().lerpVectors(vA.uv, vB.uv, t)
                 : null
         };
     }
@@ -51,7 +51,7 @@ export class MeshCutter{
     }
 
     private static clipTriangle(v0: VertexData, v1: VertexData, v2: VertexData, planeNormal: THREE.Vector3, planeConstant: number, topVerts: VertexData[], bottomVerts: VertexData[]) {
-        
+
         //get the [n.r + d] values based on 'r' being vertex point on the triangle v0,v1,v2
         const dists = [
             this.classifyPoint(v0.position, planeNormal, planeConstant),
