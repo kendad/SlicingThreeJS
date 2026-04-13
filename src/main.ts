@@ -98,6 +98,12 @@ modelSelect.addEventListener('change', () => {
     loadModel(modelSelect.value);
 });
 
+
+//Helper GRID
+const gridHelper = new THREE.GridHelper(200, 200, 0x444444, 0x222222);
+gridHelper.position.y = -1.0; 
+scene.add(gridHelper);
+
 //render LOOP
 const render = () => {
     controls.update();
