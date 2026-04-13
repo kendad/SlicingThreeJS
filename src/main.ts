@@ -3,6 +3,8 @@ import './style.css'
 import * as THREE from 'three';
 import { OrbitControls } from 'three/examples/jsm/Addons.js';
 import { GLTFLoader } from 'three/examples/jsm/Addons.js';
+import { CutManager } from './CutManager';
+import { InterfaceManager } from './InterfaceManager';
 
 //all our models will be scaled in a 2x2x2 configuration to fit into the screen
 const modelTargetSize: number = 2;
@@ -39,8 +41,20 @@ scene.add(new THREE.AmbientLight(0xffffff, 0.5));
 const modelSelect = document.getElementById("model-select") as HTMLSelectElement;
 const gltfLoader = new GLTFLoader();
 
+//Slicing and Interface Logic
+const cutManager = new CutManager(modelRoot);
+new InterfaceManager(
+    camera,
+    controls,
+    modelRoot,
+    sliceLine,
+    (planeNormal,planeConstant) => cutManager.executeCut(planeNormal,planeConstant)
+);
+
 //Function to load and center the model
 const loadModel = (url: string) => {
+    //Clear existing models
+    cutManager.clearModel();
 
     //load the model
     gltfLoader.load(url, (gltf) => {
@@ -78,6 +92,11 @@ const loadModel = (url: string) => {
 
 //load the initialModel
 loadModel(modelSelect.value);
+
+// UI Event Listener for when user changes the models from the list
+modelSelect.addEventListener('change', () => {
+    loadModel(modelSelect.value);
+});
 
 //render LOOP
 const render = () => {

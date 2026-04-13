@@ -3,7 +3,7 @@ import { OrbitControls } from 'three/examples/jsm/Addons.js';
 
 type AppState = 'IDLE' | 'SLICING' | 'DRAGGING';
 
-export class InterfaceManager{
+export class InterfaceManager {
     private state: AppState = 'IDLE';
     private raycaster = new THREE.Raycaster();
     private mouse = new THREE.Vector2();
@@ -11,6 +11,7 @@ export class InterfaceManager{
     private selectedObject: THREE.Object3D | null = null;
     private dragPlane = new THREE.Plane();
     private dragOffset = new THREE.Vector3();
+    private modeIndicator: HTMLElement;
 
     constructor(
         private camera: THREE.PerspectiveCamera,
@@ -19,8 +20,8 @@ export class InterfaceManager{
         private sliceLine: HTMLElement,
         //get the onSlice fucntion 
         private onSlice: (normal: THREE.Vector3, constant: number) => void
-    ) 
-    {
+    ) {
+        this.modeIndicator = document.getElementById('mode-indicator')!;
         this.initEvents();
     }
 
@@ -28,7 +29,35 @@ export class InterfaceManager{
         window.addEventListener('mousedown', this.onMouseDown.bind(this));
         window.addEventListener('mousemove', this.onMouseMove.bind(this));
         window.addEventListener('mouseup', this.onMouseUp.bind(this));
+
+        window.addEventListener('keydown', this.onKeyDown.bind(this));
+        window.addEventListener('keyup', this.onKeyUp.bind(this));
     }
+
+    // helper function to refresh the UI
+    private updateModeUI(isKeyPressed: boolean = false) {
+        // If we are currently Slicing/Dragging OR a modifier key is held down
+        const isEditing = this.state !== 'IDLE' || isKeyPressed;
+
+        if (isEditing) {
+            this.modeIndicator.innerText = 'EDIT';
+            this.modeIndicator.classList.add('edit-active');
+        } else {
+            this.modeIndicator.innerText = 'NORMAL';
+            this.modeIndicator.classList.remove('edit-active');
+        }
+    }
+
+    private onKeyDown(e: KeyboardEvent) {
+        //if Ctrl or Alt are down
+        this.updateModeUI(e.ctrlKey || e.altKey);
+    }
+
+    private onKeyUp(e: KeyboardEvent) {
+        // Pass the remaining state
+        this.updateModeUI(e.ctrlKey || e.altKey);
+    }
+
 
     //return the intersection point from a raycaster and an infinitley large plane centered at (0,0,0)
     private getIntersectionPoint(e: MouseEvent): THREE.Vector3 {
@@ -53,14 +82,15 @@ export class InterfaceManager{
         this.sliceLine.style.display = show ? 'block' : 'none';
     }
 
-    private onMouseDown(e:MouseEvent){
+    private onMouseDown(e: MouseEvent) {
         //(Ctrl + Click to slice the model)
         if (e.ctrlKey) {
             this.state = 'SLICING';
+
             this.controls.enabled = false;
             this.startPoint.copy(this.getIntersectionPoint(e));
             this.updateLineUI(e.clientX, e.clientY, e.clientX, e.clientY, true);
-        } 
+        }
 
         //(Alt + Click to Drag the model)
         else if (e.altKey) {
@@ -72,6 +102,7 @@ export class InterfaceManager{
 
             if (intersects.length > 0) {
                 this.state = 'DRAGGING';
+
                 let target = intersects[0].object;
                 while (target.parent && target.parent !== this.modelRoot) target = target.parent!;
                 this.selectedObject = target;
@@ -86,7 +117,7 @@ export class InterfaceManager{
         }
     }
 
-    private onMouseMove(e:MouseEvent){
+    private onMouseMove(e: MouseEvent) {
         this.mouse.x = (e.clientX / window.innerWidth) * 2 - 1;
         this.mouse.y = -(e.clientY / window.innerHeight) * 2 + 1;
 
@@ -94,7 +125,7 @@ export class InterfaceManager{
             const x1 = parseFloat(this.sliceLine.getAttribute('x1')!);
             const y1 = parseFloat(this.sliceLine.getAttribute('y1')!);
             this.updateLineUI(x1, y1, e.clientX, e.clientY, true);
-        } 
+        }
         else if (this.state === 'DRAGGING' && this.selectedObject) {
             const point = new THREE.Vector3();
             this.raycaster.setFromCamera(this.mouse, this.camera); // update mouse first
@@ -105,7 +136,7 @@ export class InterfaceManager{
         }
     }
 
-    private onMouseUp(e:MouseEvent){
+    private onMouseUp(e: MouseEvent) {
         if (this.state === 'SLICING') {
             const endPoint = this.getIntersectionPoint(e);
             //Slice only when the slice distance is not too tiny
@@ -118,12 +149,13 @@ export class InterfaceManager{
                 const midPoint = new THREE.Vector3().addVectors(this.startPoint, endPoint).multiplyScalar(0.5);
                 //[n.r + d = 0] where [d = -n.p] and 'd' is the plane constant
                 const planeConstant = -planeNormal.dot(midPoint);
-                
+
                 //Slice the model
                 this.onSlice(planeNormal, planeConstant);
             }
         }
         this.state = 'IDLE';
+
         this.selectedObject = null;
         this.controls.enabled = true;
         this.updateLineUI(0, 0, 0, 0, false);

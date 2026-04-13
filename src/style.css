@@ -98,3 +98,29 @@ strong {
     color: #fff;
     font-weight: 600;
 }
+
+#mode-indicator {
+    position: fixed;
+    top: 24px;
+    right: 24px;
+    z-index: 20;
+    
+    background: rgba(18, 18, 18, 0.8);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+    
+    padding: 8px 16px;
+    border-radius: 6px;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    
+    color: #007aff; /* Blue for Normal */
+    font-size: 12px;
+    font-weight: 800;
+    letter-spacing: 0.1em;
+    pointer-events: none;
+    transition: color 0.2s ease;
+}
+
+#mode-indicator.edit-active {
+    color: #ff3b30; /* Red for Edit */
+}
