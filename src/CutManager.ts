@@ -72,4 +72,23 @@ export class CutManager {
             }
         });
     }
+
+    //Remove all the models from the scene
+    clearModel() {
+        while (this.modelRoot.children.length > 0) {
+            const child = this.modelRoot.children[0];
+            // Clean up geometries and materials
+            child.traverse((node) => {
+                if (node instanceof THREE.Mesh) {
+                    node.geometry.dispose();
+                    if (Array.isArray(node.material)) {
+                        node.material.forEach(m => m.dispose());
+                    } else {
+                        node.material.dispose();
+                    }
+                }
+            });
+            this.modelRoot.remove(child);
+        }
+    }
 }
